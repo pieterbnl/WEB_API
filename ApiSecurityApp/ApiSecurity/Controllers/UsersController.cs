@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ApiSecurity.Controllers;
 
@@ -14,7 +15,7 @@ public class UsersController : ControllerBase
     }
 
     // GET: api/<UsersController>
-    [HttpGet]
+    [HttpGet]    
     public IEnumerable<string> Get()
     {
         return new string[] { "value1", "value2" };
@@ -22,6 +23,7 @@ public class UsersController : ControllerBase
 
     // GET api/<UsersController>/5
     [HttpGet("{id}")]
+    [Authorize]
     public string Get(int id)
     {
         return "value";
