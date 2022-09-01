@@ -10,7 +10,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApiVersioning(opts =>
 {
     opts.AssumeDefaultVersionWhenUnspecified = true;
-    opts.DefaultApiVersion = new(1, 0);
+    opts.DefaultApiVersion = new(1, 0); // major & ninor version
+    opts.ReportApiVersions = true; // shows version for accessed endpoint
 });
 
 
