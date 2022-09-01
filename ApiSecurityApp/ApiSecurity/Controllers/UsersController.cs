@@ -23,7 +23,7 @@ public class UsersController : ControllerBase
 
     // GET api/<UsersController>/5
     [HttpGet("{id}")]
-    [Authorize]
+    [Authorize(Policy = "MustHaveEmployeeId")]
     public string Get(int id)
     {
         return "value";

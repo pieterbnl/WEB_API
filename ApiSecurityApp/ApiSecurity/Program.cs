@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -10,6 +11,21 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAuthorization(opts =>
+{
+    // Adding custom claim policies
+    opts.AddPolicy("MustHaveEmployeeId", policy =>
+    {
+        policy.RequireClaim("employeeId");
+    });
+
+    // The following ensures that, if no authorization policy is applied,
+    // at least the user is required to be authenticated: the bare minimum to use the API.
+    opts.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(opts =>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,7 +16,7 @@ public class AuthenticationController : ControllerBase
 
     // HARD CODED LOGIN DETAILS SOLUTION - FOR QUICK TESTING ONLY
     public record AuthenticationData(string? UserName, string? Password);
-    public record UserData(int UserId, string UserName);
+    public record UserData(int UserId, string UserName, string Title, string EmployeeId);
 
     public AuthenticationController(IConfiguration config)
     {
@@ -24,6 +25,7 @@ public class AuthenticationController : ControllerBase
 
     // api/Authentication/token
     [HttpPost("token")]
+    [AllowAnonymous]
     public ActionResult<string> Authenticate([FromBody] AuthenticationData data)
     {
         // validate credentials
@@ -57,6 +59,8 @@ public class AuthenticationController : ControllerBase
         List<Claim> claims = new();
         claims.Add(new(JwtRegisteredClaimNames.Sub, user.UserId.ToString())); // verify the subject is the user
         claims.Add(new(JwtRegisteredClaimNames.UniqueName, user.UserName)); // verify the username is the user
+        claims.Add(new("title", user.Title));
+//        claims.Add(new("employeeId", user.EmployeeId));
 
         // Build token
         var token = new JwtSecurityToken(
@@ -78,13 +82,13 @@ public class AuthenticationController : ControllerBase
         if (CompareValues(data.UserName, "jimmy") && 
             CompareValues(data.Password, "test123"))
         {
-            return new UserData(1, data.UserName);
+            return new UserData(1, data.UserName, "CEO", "E001");
         }
 
         if (CompareValues(data.UserName, "johny") &&
            CompareValues(data.Password, "test123"))
         {
-            return new UserData(2, data.UserName);
+            return new UserData(2, data.UserName, "Sales Engineer", "E013");
         }
 
         return null;
