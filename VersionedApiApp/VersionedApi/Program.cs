@@ -28,7 +28,7 @@ builder.Services.AddSwaggerGen(opts =>
     opts.SwaggerDoc("v1", new OpenApiInfo()
     {
         Version = "v1",
-        Title = $"{title} v1",
+        Title = $"{title} v1 (deprecated)",
         Description = description,
         TermsOfService = terms,
         License = license,
@@ -50,7 +50,7 @@ builder.Services.AddSwaggerGen(opts =>
 builder.Services.AddApiVersioning(opts =>
 {
     opts.AssumeDefaultVersionWhenUnspecified = true;
-    opts.DefaultApiVersion = new(1, 0); // major & ninor version
+    opts.DefaultApiVersion = new(2, 0); // major & ninor version
     opts.ReportApiVersions = true; // shows version for accessed endpoint
 });
 
@@ -69,7 +69,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(opts =>
     {
         opts.SwaggerEndpoint("/swagger/v2/swagger.json", "My API v2");
-        opts.SwaggerEndpoint("/swagger/v2/swagger.json", "My API v2");opts.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");        
+        opts.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");        
     });
 }
 
