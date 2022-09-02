@@ -7,6 +7,13 @@ namespace MonitoringApi.Controllers;
 [ApiController]
 public class UsersController : ControllerBase
 {
+    private readonly ILogger<UsersController> _logger;
+
+    public UsersController(ILogger<UsersController> logger) // pass in UsersController class, to provide more information about this instance
+    {
+        _logger = logger;
+    }
+
     // GET: api/<UsersController>
     [HttpGet]
     public IEnumerable<string> Get()
@@ -16,9 +23,16 @@ public class UsersController : ControllerBase
 
     // GET api/<UsersController>/5
     [HttpGet("{id}")]
-    public string Get(int id)
+    public IActionResult Get(int id)
     {
-        return "value";
+        if (id < 0 || id > 100)
+        {
+            _logger.LogWarning("The given Id of {Id} was invalid.", id); // structured error logging (saving field seperately, allowing it to be queried), instead of string interpolation
+            return BadRequest("Index out of range");
+        }
+
+        _logger.LogInformation(@"The api\Users\{id} was called", id);
+        return Ok($"Value{id}");
     }
 
     // POST api/<UsersController>
