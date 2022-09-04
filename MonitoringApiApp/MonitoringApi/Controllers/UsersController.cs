@@ -25,14 +25,30 @@ public class UsersController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
-        if (id < 0 || id > 100)
+        //if (id < 0 || id > 100)
+        //{
+        //    _logger.LogWarning("The given Id of {Id} was invalid.", id); // structured error logging (saving field seperately, allowing it to be queried), instead of string interpolation
+        //    return BadRequest("Index out of range");
+        //}
+
+        //_logger.LogInformation(@"The api\Users\{id} was called", id);
+        //return Ok($"Value{id}");
+
+        try
         {
-            _logger.LogWarning("The given Id of {Id} was invalid.", id); // structured error logging (saving field seperately, allowing it to be queried), instead of string interpolation
+            if (id < 0 || id > 100)
+            {
+                throw new ArgumentOutOfRangeException(nameof(id));
+            }
+
+            _logger.LogInformation(@"The api\Users\{id} was called", id);
+            return Ok($"Value{id}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex,"The given Id of {Id} was invalid.", id); // trying LogError instead of LogWarning
             return BadRequest("Index out of range");
         }
-
-        _logger.LogInformation(@"The api\Users\{id} was called", id);
-        return Ok($"Value{id}");
     }
 
     // POST api/<UsersController>
