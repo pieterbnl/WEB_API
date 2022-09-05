@@ -18,7 +18,8 @@ public class UsersController : ControllerBase
     [HttpGet]
     public IEnumerable<string> Get()
     {
-        return new string[] { "value1", "value2" };
+        // return new string[] { "value1", "value2" };
+        throw new Exception("Something bad happened dude");
     }
 
     // GET api/<UsersController>/5

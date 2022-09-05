@@ -2,6 +2,9 @@
 
 namespace MonitoringApi.HealthChecks;
 
+// https://github.com/xabaril/aspnetcore.diagnostics.healthchecks
+// https://github.com/IzyPro/WatchDog
+
 public class RandomHealthCheck : IHealthCheck
 {
     // Async call to check the health of the application
