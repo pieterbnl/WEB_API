@@ -11,9 +11,10 @@ namespace ApiProtection.Controllers
     {
         // GET: api/<UsersController>
         [HttpGet]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any)] // Any = anywhere, not just the client or the server
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new string[] { Random.Shared.Next(1, 101).ToString() }; // gives a random number between 1 and 100 inclusive
         }
 
         // GET api/<UsersController>/5
