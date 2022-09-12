@@ -9,15 +9,15 @@ namespace ApiProtection.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        // GET: api/<UsersController>
+        // GET: api/Users
         [HttpGet]
-        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any, NoStore = false)] // Any = anywhere, not just the client or the  // NoStore = false ensures the data is stored
+        // [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any, NoStore = false)] // Any = anywhere, not just the client or the  // NoStore = false ensures the data is stored
         public IEnumerable<string> Get()
         {
             return new string[] { Random.Shared.Next(1, 101).ToString() }; // gives a random number between 1 and 100 inclusive
         }
 
-        // GET api/<UsersController>/5
+        // GET api/Users/5
         [HttpGet("{id}")]
         [ResponseCache(Duration = 20, Location = ResponseCacheLocation.Any, NoStore = false)] 
         public string Get(int id)
