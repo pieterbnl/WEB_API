@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoLibrary", "TodoLibrary\TodoLibrary.csproj", "{81000035-ECF8-45AE-875F-B38FE7CA6127}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApi", "TodoApi\TodoApi.csproj", "{6D475B60-8C05-4511-9BCC-C1A6E07B7E2B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{81000035-ECF8-45AE-875F-B38FE7CA6127} = {81000035-ECF8-45AE-875F-B38FE7CA6127}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
