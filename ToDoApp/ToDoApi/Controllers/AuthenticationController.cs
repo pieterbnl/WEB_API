@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace ToDoApi.Controllers;
+namespace TodoApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -25,15 +25,15 @@ public class AuthenticationController : ControllerBase
     [AllowAnonymous]
     public ActionResult<string> Authenticate([FromBody] AuthenticationData data)
     {
-        var user = ValidateCredentials(data);   
-        
+        var user = ValidateCredentials(data);
+
         if (user is null)
         {
             return Unauthorized();
         }
-        
+
         string token = GenerateToken(user);
-        
+
         return Ok(token);
     }
 
@@ -41,7 +41,7 @@ public class AuthenticationController : ControllerBase
     {
         var secretKey = new SymmetricSecurityKey(
             Encoding.ASCII.GetBytes(
-                _config.GetValue<string>("Authentication.SecretKey")));
+                _config.GetValue<string>("Authentication:SecretKey")));
 
         var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
@@ -64,12 +64,19 @@ public class AuthenticationController : ControllerBase
 
     private UserData? ValidateCredentials(AuthenticationData data)
     {
-        // TO COMPLETE WITH A CALL TO AUTH SYSTEM
-        if (CompareValues(data.UserName, "pbe") &&
-            CompareValues(data.Password, "test123"))
+        // THIS IS NOT PRODUCTION CODE - REPLACE THIS WITH A CALL TO YOUR AUTH SYSTEM
+        if (CompareValues(data.UserName, "tcorey") &&
+            CompareValues(data.Password, "Test123"))
         {
-            return new UserData(1, "John", "Carmack", data.UserName!);
+            return new UserData(1, "Tim", "Corey", data.UserName!);
         }
+
+        if (CompareValues(data.UserName, "sstorm") &&
+            CompareValues(data.Password, "Test123"))
+        {
+            return new UserData(2, "Sue", "Storm", data.UserName!);
+        }
+
         return null;
     }
 
@@ -80,15 +87,9 @@ public class AuthenticationController : ControllerBase
             if (actual.Equals(expected))
             {
                 return true;
-            }            
+            }
         }
+
         return false;
     }
 }
-
-/*GET:/Todo; get all to-do's
-GET:/Todo/{id}; get a specific to-do
-POST:/ Todo; create a new to-do
-PUT:/ Todo /{ id}; update a specific to-do task information
-DELETE:/ Todo /{ id}; delete a to-do
-PUT:/ Todo /{ id}/ Complete; mark the to-do as complete*/

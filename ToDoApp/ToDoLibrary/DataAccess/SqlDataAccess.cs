@@ -1,5 +1,4 @@
-﻿namespace ToDoLibrary.DataAccess;
-
+﻿namespace TodoLibrary.DataAccess;
 public class SqlDataAccess
 {
 

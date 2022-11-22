@@ -9,11 +9,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddAuthorization(opts =>
-{    
-    opts.FallbackPolicy = new AuthorizationPolicyBuilder() // requires every endpoint to be secure
+{
+    opts.FallbackPolicy = new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
         .Build();
 });
+
+builder.Services.AddHealthChecks()
+    .AddSqlServer(builder.Configuration.GetConnectionString("Default"));
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(opts =>
@@ -21,16 +24,16 @@ builder.Services.AddAuthentication("Bearer")
         opts.TokenValidationParameters = new()
         {
             ValidateIssuer = true,
-            ValidateAudience = true,            
+            ValidateAudience = true,
             ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration.GetValue<string>("Authentication:Issuer"),
-            ValidAudience = builder.Configuration.GetValue<string>("Authentication:Audience"),            
+            ValidAudience = builder.Configuration.GetValue<string>("Authentication:Audience"),
             IssuerSigningKey = new SymmetricSecurityKey(
-                 Encoding.ASCII.GetBytes(
-                     builder.Configuration.GetValue<string>("Authentication:SecretKey")))
+                Encoding.ASCII.GetBytes(
+                builder.Configuration.GetValue<string>("Authentication:SecretKey")))
         };
-    }); 
-      
+    });
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -42,9 +45,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHealthChecks("/health").AllowAnonymous();
 
 app.Run();
