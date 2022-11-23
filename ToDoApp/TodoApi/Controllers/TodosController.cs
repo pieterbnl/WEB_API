@@ -25,21 +25,21 @@ public class TodosController : ControllerBase
 
     // POST api/todos
     [HttpPost]
-    public IActionResult Post([FromBody] string value)
+    public IActionResult Post([FromBody] TodoModel value)
     {
         throw new NotImplementedException();
     }
 
     // PUT api/todos/5
     [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] string value)
+    public IActionResult Put(int id, [FromBody] TodoModel value)
     {
         throw new NotImplementedException();
     }
 
     // PUT api/todos/5/complete
     [HttpPut("{id}/Complete")]
-    public IActionResult Complete(int id)
+    public IActionResult Complete(int id, [FromBody] TodoModel value)
     {
         throw new NotImplementedException();
     }
