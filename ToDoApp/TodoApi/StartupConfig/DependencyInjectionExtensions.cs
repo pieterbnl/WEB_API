@@ -6,24 +6,31 @@ using TodoLibrary.DataAccess;
 namespace TodoApi.StartupConfig;
 
 public static class DependencyInjectionExtensions
-{
-    public static void AddServices(this WebApplicationBuilder builder)
+{    
+    public static void AddStandardServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen();        
+    }
+    public static void AddCustomServices(this WebApplicationBuilder builder)
+    {
         builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
         builder.Services.AddSingleton<ITodoData, TodoData>();
-
+    }
+    public static void AddHealthCheckServices(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddHealthChecks()
+           .AddSqlServer(builder.Configuration.GetConnectionString("Default"));
+    }
+    public static void AddAuthServices(this WebApplicationBuilder builder)
+    {
         builder.Services.AddAuthorization(opts =>
         {
             opts.FallbackPolicy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
                 .Build();
         });
-
-        builder.Services.AddHealthChecks()
-            .AddSqlServer(builder.Configuration.GetConnectionString("Default"));
 
         builder.Services.AddAuthentication("Bearer")
             .AddJwtBearer(opts =>
